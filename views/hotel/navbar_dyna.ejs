@@ -1,0 +1,150 @@
+<style>
+  .search-bar {
+    background-color: #34495e;
+    padding: 15px;
+    border-radius: 5px;
+  }
+
+  .custom-dropdown {
+    display: none;
+    position: absolute;
+    background-color: white;
+    color: black;
+    min-width: 250px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+  }
+
+  #guestsDropdownButton + .custom-dropdown {
+    left: 0 !important;
+    right: auto !important;
+  }
+
+  @media (max-width: 767px) {
+    .search-bar {
+      flex-direction: column;
+    }
+  }
+</style>
+
+<div class="mt-5">
+  <div class="search-bar d-flex flex-column flex-md-row">
+    <div class="dropdown mr-2 mb-2 mb-md-0">
+      <button
+        class="btn btn-primary dropdown-toggle"
+        type="button"
+        id="cityDropdown"
+        data-toggle="dropdown"
+        aria-haspopup="true"
+        aria-expanded="false"
+      >
+        City, Area or Property
+      </button>
+      <div class="dropdown-menu" aria-labelledby="cityDropdown">
+        <a class="dropdown-item" href="#">Mumbai</a>
+        <a class="dropdown-item" href="#">Delhi</a>
+        <a class="dropdown-item" href="#">Bangalore</a>
+      </div>
+    </div>
+    <div class="mr-2 mb-2 mb-md-0">
+      <input
+        type="text"
+        class="form-control datepicker"
+        placeholder="Check-in"
+      />
+    </div>
+    <div class="mr-2 mb-2 mb-md-0">
+      <input
+        type="text"
+        class="form-control datepicker"
+        placeholder="Check-out"
+      />
+    </div>
+    <div class="dropdown mr-2 mb-2 mb-md-0" id="guestsDropdownContainer">
+      <button class="btn btn-primary" type="button" id="guestsDropdownButton">
+        Rooms & Guests
+      </button>
+      <div class="custom-dropdown p-3" id="guestsDropdown">
+        <div class="form-group">
+          <label for="rooms">Rooms</label>
+          <select class="form-control" id="rooms">
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="adults">Adults</label>
+          <select class="form-control" id="adults">
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="children">Children</label>
+          <select class="form-control" id="children">
+            <option>0</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+          </select>
+          <small class="form-text text-muted">0 - 17 Years Old</small>
+        </div>
+        <button class="btn btn-primary" id="applyGuests">Apply</button>
+      </div>
+    </div>
+    <button class="btn btn-success">Search</button>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function () {
+    $(".datepicker").datepicker({
+      format: "D, dd M yyyy",
+      autoclose: true,
+      todayHighlight: true,
+    });
+
+    $("#guestsDropdownButton").on("click", function () {
+      $("#guestsDropdown").toggle();
+    });
+
+    $(document).on("click", function (e) {
+      if (
+        !$(e.target).closest("#guestsDropdownButton").length &&
+        !$(e.target).closest("#guestsDropdown").length
+      ) {
+        $("#guestsDropdown").hide();
+      }
+    });
+
+    $("#applyGuests").on("click", function () {
+      var rooms = $("#rooms").val();
+      var adults = $("#adults").val();
+      var children = $("#children").val();
+      var guestText =
+        rooms +
+        " Room" +
+        (rooms > 1 ? "s" : "") +
+        ", " +
+        adults +
+        " Adult" +
+        (adults > 1 ? "s" : "") +
+        ", " +
+        children +
+        " Child" +
+        (children > 1 ? "ren" : "");
+      $("#guestsDropdownButton").text(guestText);
+      $("#guestsDropdown").hide();
+    });
+
+    $(".dropdown-item").on("click", function () {
+      var selectedText = $(this).text();
+      $(this).closest(".dropdown").find(".dropdown-toggle").text(selectedText);
+    });
+  });
+</script>

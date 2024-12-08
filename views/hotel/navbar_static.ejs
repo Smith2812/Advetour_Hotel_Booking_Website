@@ -1,0 +1,153 @@
+<style>
+    .login-btn-container {
+        display: flex;
+        align-items: center;
+        padding: 5px;
+        height: 3rem;
+        margin-top: 16px;
+        background: linear-gradient(45deg, #30bfd8, #1879e8, #0a4487);
+    }
+    .login-btn-container img {
+        margin-right: 10px;
+    }
+    .login-btn-container p {
+        margin: 0;
+        font-weight: bold;
+        color: black;
+    }
+
+    .language-selector {
+        display: flex;
+        align-items: center;
+        padding: 5px;
+        height: 3rem;
+        margin-top: 16px;
+        margin-right: 20px;
+    }
+    .language-selector select {
+        font-weight: bold;
+        color: black;
+        border: none;
+        background: transparent;
+        cursor: pointer;
+    }
+</style>
+
+  </style>
+
+
+<nav class="navbar navbar-expand-lg  navbar-dark bg-light border" id="">
+    <div class="container-fluid">
+      <a class="navbar-brand text-primary fs-3" href="#" style="padding-left: 4%;">Adventour</a>
+      <button class="navbar-toggler btn-dark" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="secondaryNavbarNav" style="margin-left: 3%;">
+        <ul class="navbar-nav column-gap-3">
+          <li class="nav-item card3">
+            <a href="#" style="text-decoration: none; color: black;" class="btn btn3">
+              <img src="https://cdn-icons-png.flaticon.com/128/12090/12090102.png" class="pt-1 pb-1" height="40px" width="40px">
+              <div>
+                  <h5 class="fs-6">Flights</h5>
+              </div>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" style="text-decoration: none; color: black;" class="btn btn3">
+              <img src="https://cdn-icons-png.flaticon.com/128/6571/6571603.png" class="pt-1 pb-1" height="40px" width="40px">
+              <div>
+                  <h5 class="fs-6">Trains</h5>
+              </div>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" style="text-decoration: none; color: black;" class="btn btn3">
+              <img src="https://cdn-icons-png.flaticon.com/128/985/985132.png" class="pt-1 pb-1" height="40px" width="40px">
+              <div>
+                  <h5 class="fs-6">Buses</h5>
+              </div>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" style="text-decoration: none; color: black;" class="btn btn3">
+              <img src="https://cdn-icons-png.flaticon.com/128/1023/1023386.png" class="pt-1 pb-1" height="40px" width="40px">
+              <div>
+                  <h5 class="fs-6">Cabs</h5>
+              </div>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" style="text-decoration: none; color: black;" class="btn btn3">
+              <img src="https://cdn-icons-png.flaticon.com/128/701/701348.png" class="pt-1 pb-1" height="40px" width="40px">
+              <div>
+                  <h5 class="fs-6">Hotels</h5>
+              </div>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" style="text-decoration: none; color: black;" class="btn btn3">
+              <img src="https://cdn-icons-png.flaticon.com/128/3169/3169047.png" class="pt-1 pb-1" height="40px" width="40px">
+              <div>
+                  <h5 class="fs-6 text-truncate" style="width: 70px;">Travel Insurance</h5>
+              </div>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" style="text-decoration: none; color: black;" class="btn btn3">
+              <img src="https://cdn-icons-png.flaticon.com/128/1018/1018528.png" class="pt-1 pb-1" height="40px" width="40px">
+              <div>
+                  <h5 class="fs-6">Villas</h5>
+              </div>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" style="text-decoration: none; color: black;" class="btn btn3">
+              <img src="https://cdn-icons-png.flaticon.com/128/6580/6580704.png" class="pt-1 pb-1" height="40px" width="40px">
+              <div>
+                  <h5 class="fs-6 text-truncate" style="width: 70px;">Holiday Packages</h5>
+              </div>
+            </a>
+          </li>
+          <li class="nav-item ms-5 fs-9 row">
+            <div class="col-12 d-flex login-btn-container rounded btn">
+              <% if(!currentUser) {%>
+                 <img src="https://cdn-icons-png.flaticon.com/128/2102/2102633.png" height="30px" width="30px">
+                 <button style="background: transparent;border: none;" class="text-light" id="openModalBtn">Login or Create Account</button>
+               <% } else {%>
+               <form action="/logout" method="POST">
+                 <img src="<%= currentUser.image.url %>" height="30px" width="30px" class="rounded-pill me-4">
+                 <button style="background: transparent;border: none;" class="text-light">Logout</button>
+               </form>
+               <% } %>
+            </div>
+          </li>
+          <li class="nav-item ms-5 fs-9 row">
+            <% if( currentUser && ! (currentUser.userType == "Regular User") ){%> 
+            <div class="col-12 d-flex rounded align-items-center">
+                <!-- <button class="btn btn-success" onclick="openPopup()" class="text-light">Edit</button>  -->
+                <div class="row">
+                   <button class="btn" onclick="openPopupadd()" >
+                    <div>
+                      <img src="https://cdn-icons-png.flaticon.com/128/4631/4631456.png" width="40px" height="40px">
+                    </div>
+                  </button>
+                </div>
+            </div>
+            <% } %>
+          </li>
+          <li class="nav-item">
+            <div class="language-selector">
+              <select id="languageSelect" onchange="changeLanguage()">
+                <option value="en">English</option>
+                <option value="es">Español</option>
+                <option value="fr">Français</option>
+                <option value="de">Deutsch</option>
+                <option value="gu">ગુજરાતી</option>
+                <!-- Add more languages as needed -->
+              </select>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>

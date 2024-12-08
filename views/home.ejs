@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://api.mapbox.com/mapbox-gl-js/v3.4.0/mapbox-gl.js"></script>
+    <link
+      href="https://api.mapbox.com/mapbox-gl-js/v3.4.0/mapbox-gl.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/stylesheets/home.css" />
+    <title>BOILERPLATE !!!</title>
+  </head>
+
+  <body class="vh-100 text-white" style="width: auto">
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Your Bookings</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body text-dark">
+            <% if( currentUser &&  currentUser.Booking &&  currentUser.Booking.length > 0) { %>
+              <% currentUser.Booking.forEach(function(booking) { %>
+                <div class="card mb-3 text-dark" >
+                  <div class="card-body">
+                    <h5 class="card-title"><%= booking.hotel %></h5>
+                    <p class="card-text">Check-in: <%= booking.checkin %></p>
+                    <p class="card-text">Check-out: <%= booking.checkout %></p>
+                    <p class="card-text">People: <%= booking.people %></p>
+                    <p class="card-text">Payment:  ₹ <%= booking.payment %></p>
+                  </div>
+                </div>
+              <% }) %>
+            <% } else { %>
+              <p>No bookings found for the current user.</p>
+            <% } %>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    
+   <%- include('./partials/navbar2') %>
+   <%- include('./partials/flash') %>
+    <div class="menu">
+      <%- include('./partials/navbar') %>
+      <%- include('./homeparts/menu') %>
+      
+    </div>
+    <div class="main mt-5">
+      
+      <%- include('./homeparts/stays') %> <%- include('./homeparts/beaches') %>
+      <%- include('./homeparts/hillstations') %> <%-
+      include('./homeparts/adventure') %> <%- include('./homeparts/heritage') %>
+      <%- include('./homeparts/pilgrimage') %> <%-
+      include('./homeparts/wonderindia') %>
+    </div>
+
+    <%- include('./Popup/popup') %>
+
+    <%- include('./partials/footer') %>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+      integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.min.js"></script>
+
+    <script>
+      $(document).ready(function () {
+        var primaryNavbar = $("#primaryNavbar");
+        var secondaryNavbar = $("#secondaryNavbar");
+        var secondaryNavbarHeight = secondaryNavbar.outerHeight();
+        $(window).scroll(function () {
+          if ($(window).scrollTop() > primaryNavbar.outerHeight()) {
+            secondaryNavbar.fadeIn();
+          } else {
+            secondaryNavbar.fadeOut();
+          }
+        });
+      });
+
+       
+    </script>
+
+  </body>
+</html>

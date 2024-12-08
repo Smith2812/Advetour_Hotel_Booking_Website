@@ -1,0 +1,272 @@
+<style>
+  .custom-modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 3;
+  }
+  .modal-content-custom {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 700px;
+  }
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+  .close:hover,
+  .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .tab-content-custom > div {
+    display: none;
+  }
+  .tab-content-custom > .active {
+    display: block;
+  }
+</style>
+
+<!-- Custom Modal -->
+<div id="customModal" class="custom-modal">
+  <div class="modal-content-custom rounded shadow-lg">
+    <span class="close">&times;</span>
+    <div class="row">
+      <!-- Carousel Section -->
+      <div class="col-md-6">
+        <div
+          id="travelLogCarousel"
+          class="carousel slide"
+          data-bs-ride="carousel"
+        >
+          <div class="carousel-inner">
+            <div class="carousel-item active h-100">
+              <img
+                src="https://images.unsplash.com/photo-1472396961693-142e6e269027?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bmF0dXJlfGVufDB8fDB8fHww"
+                class="d-block w-100"
+                alt="Travel Log 1"
+              />
+              <div class="carousel-caption d-none d-md-block">
+                <h5>Travel Log 1</h5>
+                <p>Description for Travel Log 1.</p>
+              </div>
+            </div>
+            <div class="carousel-item">
+              <img
+                src="https://images.unsplash.com/photo-1433086966358-54859d0ed716?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8bmF0dXJlfGVufDB8fDB8fHww"
+                class="d-block w-100"
+                alt="Travel Log 2"
+              />
+              <div class="carousel-caption d-none d-md-block">
+                <h5>Travel Log 2</h5>
+                <p>Description for Travel Log 2.</p>
+              </div>
+            </div>
+            <div class="carousel-item">
+              <img
+                src="https://plus.unsplash.com/premium_photo-1675827055694-010aef2cf08f?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8bmF0dXJlfGVufDB8fDB8fHww"
+                class="d-block w-100"
+                alt="Travel Log 3"
+              />
+              <div class="carousel-caption d-none d-md-block">
+                <h5>Travel Log 3</h5>
+                <p>Description for Travel Log 3.</p>
+              </div>
+            </div>
+          </div>
+          <button
+            class="carousel-control-prev"
+            type="button"
+            data-bs-target="#travelLogCarousel"
+            data-bs-slide="prev"
+          >
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button
+            class="carousel-control-next"
+            type="button"
+            data-bs-target="#travelLogCarousel"
+            data-bs-slide="next"
+          >
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+        </div>
+      </div>
+      <!-- Form Section -->
+      <div class="col-md-6">
+        <ul
+          class="nav nav-tabs justify-content-center"
+          id="authTab"
+          role="tablist"
+        >
+          <li class="nav-item" role="presentation">
+            <button
+              class="nav-link active"
+              id="login-tab"
+              type="button"
+              role="tab"
+              aria-controls="login"
+              aria-selected="true"
+            >
+              Login
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button
+              class="nav-link"
+              id="register-tab"
+              type="button"
+              role="tab"
+              aria-controls="register"
+              aria-selected="false"
+            >
+              Register
+            </button>
+          </li>
+        </ul>
+        <div class="tab-content-custom">
+          <div id="login" class="active">
+            <div class="p-3 text-dark">
+              <img
+                src="https://cdn-icons-png.flaticon.com/512/1177/1177568.png"
+                class="img-fluid mx-auto d-block"
+                width="100px"
+              />
+              <form action="/login" method="POST">
+                <div class="input-group mt-4 mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text " id="basic-addon1">@</span>
+                    </div>
+                    <input type="text" class="form-control" placeholder="username" aria-label="username" name="username" aria-describedby="basic-addon1">
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text " id="basic-addon1">@</span>
+                    </div>
+                    <input type="text" class="form-control" placeholder="password" aria-label="password" name="password" aria-describedby="basic-addon1">
+                </div>
+                <button class="btn btn-primary w-100">Login</button>
+              </form>
+            </div>
+          </div>
+          <div id="register">
+            <div class="p-3 text-dark">
+              <img
+                src="https://cdn-icons-png.flaticon.com/128/10337/10337227.png"
+                class="img-fluid mx-auto d-block"
+                width="100px"
+              />
+              <form
+                action="/register"
+                method="POST"
+                enctype="multipart/form-data"
+              >
+                <div class="input-group mt-3 mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text " id="basic-addon1">@</span>
+                    </div>
+                    <input type="text" class="form-control" placeholder="username" aria-label="username" name="username" aria-describedby="basic-addon1">
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text " id="basic-addon1">@</span>
+                    </div>
+                    <input type="text" class="form-control" placeholder="password" aria-label="password" name="password" aria-describedby="basic-addon1">
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text " id="basic-addon1">@</span>
+                    </div>
+                    <input type="text" class="form-control" placeholder="email" aria-label="email" name="email" aria-describedby="basic-addon1">
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text " id="basic-addon1">@</span>
+                    </div>
+                  <select
+                    class="form-select"
+                    id="userType"
+                    name="userType"
+                    required
+                  >
+                  <option value="Admin">Admin</option>
+                  <option value="Property Owner">Property Owner</option>
+                  <option value="Regular User">Regular User</option>
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label for="photo" class="form-label">User Photo</label>
+                  <input
+                    type="file"
+                    class="form-control"
+                    id="photo"
+                    name="image"
+                    required
+                  />
+                </div>
+                <button class="btn btn-primary w-100">Register</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+
+  document.addEventListener("DOMContentLoaded", function () {
+    var modal = document.getElementById("customModal");
+    var openModalBtn = document.getElementById("openModalBtn");
+    var closeModalBtn = document.getElementsByClassName("close")[0];
+
+    openModalBtn.onclick = function () {
+      modal.style.display = "block";
+    };
+
+    closeModalBtn.onclick = function () {
+      modal.style.display = "none";
+    };
+
+    window.onclick = function (event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    };
+
+    var loginTab = document.getElementById("login-tab");
+    var registerTab = document.getElementById("register-tab");
+    var loginContent = document.getElementById("login");
+    var registerContent = document.getElementById("register");
+
+    loginTab.onclick = function () {
+      loginContent.classList.add("active");
+      registerContent.classList.remove("active");
+      loginTab.classList.add("active");
+      registerTab.classList.remove("active");
+    };
+
+    registerTab.onclick = function () {
+      registerContent.classList.add("active");
+      loginContent.classList.remove("active");
+      registerTab.classList.add("active");
+      loginTab.classList.remove("active");
+    };
+  });
+</script>

@@ -1,0 +1,77 @@
+<style>
+  .navbar-brand {
+    margin-left: 8%;
+    font-size: 1.5rem;
+  }
+  .navbar-light .navbar-nav .nav-link {
+    color: antiquewhite;
+  }
+  .shadow-lg {
+    box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175) !important;
+  }
+  @media (max-width: 992px) {
+    .navbar-brand {
+      margin-left: 0;
+      margin-right: 0;
+    }
+    .navbar-nav {
+      text-align: center;
+    }
+    .d-flex {
+      justify-content: center;
+    }
+  }
+</style>
+
+<nav class="navbar navbar-expand-lg navbar-light" id="primaryNavbar" style="background: transparent;width: 100%;">
+  <div class="container-fluid">
+    <a class="navbar-brand text-white" href="#">Advetour</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <div class="d-flex flex-row shadow-lg pt-1 pb-1 px-1">
+            
+          </div>
+        </li>
+        <li class="nav-item">
+          <div class="d-flex flex-row shadow-lg pt-1 pb-1 px-1">
+            <div class="me-2">
+              <img src="https://cdn-icons-png.flaticon.com/128/3372/3372157.png" width="40px" height="40px">
+            </div>
+            <div class="d-flex flex-column dropdown-toggle" id="myTripsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                <div style="font-size: small;color: rgb(208, 209, 210);">My trips</div>
+                <div style="font-size: small; top: 0; color: rgb(208, 209, 210);">Manage your booking!</div>
+              </button>
+              
+                
+            </div>
+          </div>
+        </li>
+      </ul>
+      <% if(!currentUser) {%>
+      <button class="btn rounded text-white" style="background: linear-gradient(45deg, #30bfd8, #1879e8,#0a4487);" id="openModalBtn">
+        <img src="https://cdn-icons-png.flaticon.com/128/9069/9069049.png" width="40px" height="40px">
+        Login or Create Account
+      </button>
+      <% }else{ %>
+        
+        <form action="/logout" method="POST">
+          <img src="<%= currentUser.image.url %>" class="rounded-pill pe-2" width="50px" height="50px" >
+          <button class="btn rounded text-white" style="background: linear-gradient(45deg, #30bfd8, #1879e8,#0a4487);">Logout</button>
+        </form>
+  
+        <% } %>
+
+    </div>
+  </div>
+
+
+</nav>
+
+
+
+

@@ -1,0 +1,193 @@
+<div class="container shadow-lg p-3 mb-5 bg-white rounded position-relative">
+  <div class="row">
+    <div class="col-md-6 text-dark">
+      <h1 class="ms-5 mt-4">Hillstations for you</h1>
+    </div>
+    <div class="col-md-6 d-flex justify-content-end align-items-center">
+      <div class="scroll-buttons position-relative me-2">
+        <button id="scroll-left3" class="btn rounded shadow-lg bg-white fs-4 text-primary">
+          &#11178;
+        </button>
+      </div>
+      <div class="scroll-buttons position-relative">
+        <button id="scroll-right3" class="btn rounded shadow-lg bg-white fs-4 text-primary">
+          &#11179;
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="d-flex flex-row overflow-hidden mt-4" id="scroll-container3" style="column-gap: 1rem;">
+    <% for(let i = 0; i < Hillstations.length; i++) { %> <% if(i==10){ %> 
+    <% break %>
+    <% } %>
+   
+    <div class="col-lg-2 col-md-3 col-sm-6 col-12 mb-4 d-flex position-relative">
+      
+      <% if( currentUser && Hillstations[i].admin.equals(currentUser._id)) { %>
+        <form action="/Hillstations/delete/<%= Hillstations[i]._id %>" method="POST">
+        <button class="delete-btn btn btn-danger btn-sm position-absolute bottom-0 end-0 m-2">&times;</button>
+        </form>
+      <% } %>
+      <% if( currentUser && Hillstations[i].admin.equals(currentUser._id)) { %>
+        <button class="update-btn3 btn btn-primary btn-sm position-absolute bottom-0 start-0 m-2" data-id="<%= Hillstations[i]._id %>">+</button>
+      <% } %>
+
+      <a href="/Hillstations/<%= Hillstations[i]._id %>">
+        <div class="mb-0 pb-2 pt-1 shadow-lg rounded-pill ms-1" style="height: 1.5rem;width:13rem; border-radius: 50% 50% 0% 0%;background-color: rgb(238, 248, 248)">
+          <div class="mb-0 mt-2 shadow-lg rounded-pill" style="height: 1rem;border-radius:50% 50% 0% 0%;background-color: rgb(194, 206, 206);"></div>
+        </div>
+        <div class="card card2 card-horizontal w-100 position-relative">
+          <div class="position-relative">
+            <% if(Hillstations[i].images.length) { %>
+            <img class="rounded" src="<%= Hillstations[i].images[0].url %>" alt="<%= Hillstations[i].title %>" height="20rem" />
+            <% } else { %>
+            <img class="img-fluid" src="https://www.hotelwelkinresidency.com/wp-content/uploads/2017/12/Picture-Not-Available.jpg" alt="No image available" />
+            <% } %>
+            <div class="card-body3 position-absolute bottom-0 start-0 w-100 text-white p-2">
+              <span class="btn btn-light pt-0 pb-0 ms-0" disabled><strong>Top 10</strong></span>
+              <strong><p class="card-title2 fs-6"><%= Hillstations[i].title  %></p></strong>
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+    
+    <% } %>
+  </div>
+</div>
+
+<!-- Update Modal -->
+<div class="modal fade" id="updatemodal3" tabindex="-1" aria-labelledby="updatemodal3Label" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header text-dark">
+        <h5 class="modal-title2" id="updatemodal3Label">Update Beach</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="updateform3" method="POST" enctype="multipart/form-data">
+          <div class="mb-3">
+            <label for="title2" class="form-label">image</label>
+            <input type="file" class="form-control" id="title2" name="image" required multiple>
+          </div>
+          <button type="submit" class="btn btn-primary">Update</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .card-horizontal {
+    display: flex;
+    flex-direction: column;
+    min-width: 150px;
+    position: relative; /* To give some space for shadow */
+}
+
+.card2 {
+    position: relative;
+}
+
+.card2::before, .card2::after {
+    content: '';
+    position: absolute;
+    top: -10px; /* Adjust this value to control the vertical position of the shadow */
+    left: 0;
+    right: 0;
+    height: 20px; /* Adjust this value to control the height of the shadow */
+    z-index: -1;
+}
+
+.card2::after {
+    top: -20px; /* Adjust this value to control the vertical position of the second shadow */
+}
+
+.card2 img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+}
+
+.card-body3 {
+    flex: 1;
+    text-align: center;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.7) 100%);
+    color: white;
+    padding: 10px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border-radius: 0 0 10px 10px; /* Optional: round the bottom corners */
+}
+
+.delete-btn {
+    z-index: 2;
+}
+
+.update-btn3 {
+    z-index: 2;
+}
+
+#scroll-container3 {
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+}
+
+.scroll-buttons {
+    z-index: 1;
+}
+
+@media (max-width: 767px) {
+    .scroll-buttons {
+        left: auto !important;
+        right: 0;
+    }
+}
+
+</style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const scrollContainer = document.getElementById("scroll-container3");
+    const scrollLeftBtn = document.getElementById("scroll-left3");
+    const scrollRightBtn = document.getElementById("scroll-right3");
+    
+    const getCardWidth = () => {
+      const card = document.querySelector('.col-lg-2');
+      const style = getComputedStyle(card);
+      const cardWidth = card.offsetWidth;
+      const gap = parseInt(style.marginRight) || 0;
+      return cardWidth + gap;
+    };
+
+    scrollLeftBtn.addEventListener("click", () => {
+      scrollContainer.scrollBy({ left: -getCardWidth(), behavior: "smooth" });
+    });
+
+    scrollRightBtn.addEventListener("click", () => {
+      scrollContainer.scrollBy({ left: getCardWidth(), behavior: "smooth" });
+    });
+
+    const updateButtons = document.querySelectorAll('.update-btn3');
+    const updatemodal3 = new bootstrap.Modal(document.getElementById('updatemodal3'));
+    const updateform3 = document.getElementById('updateform3');
+    const title2Input = document.getElementById('title2');
+
+    updateButtons.forEach(btn => {
+      btn.addEventListener('click', (event) => {
+        const cardId = btn.getAttribute('data-id');
+        updateform3.action = `/Hillstations/uprequest/${cardId}`;
+
+        // Clear the form fields or set them to default values if necessary
+        title2Input.value = '';
+
+        // Show the modal
+        updatemodal3.show();
+      });
+    });
+  });
+</script>

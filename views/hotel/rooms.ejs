@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <title>Room Details</title>
+    <style>
+        body {
+           
+            background-size: cover;
+            color: #fff;
+        }
+        .container {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 30px;
+            border-radius: 10px;
+        }
+        .amenity-group {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .amenity-item {
+            display: flex;
+            align-items: center;
+        }
+        .amenity-item input {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="text-center pt-3">
+        <form action="/hotels/<%= hotel._id %>">
+        <button class="btn btn-success ">Back</button>
+    </form>
+    </div>
+    
+    <div class="container mt-3 shadow-lg" >
+        <h2 class="text-center">Room Details</h2>
+        <form action="/hotels/<%= hotel._id %>/rooms/add" method="POST" enctype="multipart/form-data">
+            <div class="form-row">
+                <div class="form-group col-md-3">
+                    <label for="title">Room title</label>
+                    <input type="text" class="form-control" id="title" name="room[title]" required>
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="size">Room Size</label>
+                    <input type="text" class="form-control" id="size" name="room[size]" required>
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="bed">Bed Type</label>
+                    <input type="text" class="form-control" id="bed" name="room[bed]" required>
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="view">Price</label>
+                    <input type="text" class="form-control" id="view" name="room[price]" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <h2 for="amenities" class="fs-1 text-center mb-3">Room Amenities</h2>
+                <div class="amenity-group">
+                    <div class="amenity-item">
+                        <input type="checkbox" id="interconnected-room" name="room[amenities]" value="Interconnected Room">
+                        <label for="interconnected-room">Interconnected Room</label>
+                    </div>
+                    <div class="amenity-item">
+                        <input type="checkbox" id="housekeeping" name="room[amenities]" value="Housekeeping">
+                        <label for="housekeeping">Housekeeping</label>
+                    </div>
+                    <div class="amenity-item">
+                        <input type="checkbox" id="bathroom" name="room[amenities]" value="Bathroom">
+                        <label for="bathroom">Bathroom</label>
+                    </div>
+                    <div class="amenity-item">
+                        <input type="checkbox" id="laundry-service" name="room[amenities]" value="Laundry Service">
+                        <label for="laundry-service">Laundry Service</label>
+                    </div>
+                    <div class="amenity-item">
+                        <input type="checkbox" id="24-hour-in-room-dining" name="room[amenities]" value="24-hour In-room Dining">
+                        <label for="24-hour-in-room-dining">24-hour In-room Dining</label>
+                    </div>
+                    <div class="amenity-item">
+                        <input type="checkbox" id="closet" name="room[amenities]" value="Closet">
+                        <label for="closet">Closet</label>
+                    </div>
+                    <div class="amenity-item">
+                        <input type="checkbox" id="minibar" name="room[amenities]" value="Minibar">
+                        <label for="minibar">Minibar</label>
+                    </div>
+                    <div class="amenity-item">
+                        <input type="checkbox" id="mini-fridge" name="room[amenities]" value="Mini Fridge">
+                        <label for="mini-fridge">Mini Fridge</label>
+                    </div>
+                    <div class="amenity-item">
+                        <input type="checkbox" id="mirror" name="room[amenities]" value="Mirror">
+                        <label for="mirror">Mirror</label>
+                    </div>
+                    <div class="amenity-item">
+                        <input type="checkbox" id="cribs" name="room[amenities]" value="Cribs">
+                        <label for="cribs">Cribs</label>
+                    </div>
+                    <div class="amenity-item">
+                        <input type="checkbox" id="seating-area" name="room[amenities]" value="Seating Area">
+                        <label for="seating-area">Seating Area</label>
+                    </div>
+                    <div class="amenity-item">
+                        <input type="checkbox" id="cushions" name="room[amenities]" value="Cushions">
+                        <label for="cushions">Cushions</label>
+                    </div>
+                    <div class="amenity-item">
+                        <input type="checkbox" id="pillows" name="room[amenities]" value="Pillows">
+                        <label for="pillows">Pillows</label>
+                    </div>
+                    <div class="amenity-item">
+                        <input type="checkbox" id="woollen-blanket" name="room[amenities]" value="Woollen Blanket">
+                        <label for="woollen-blanket">Woollen Blanket</label>
+                    </div>
+                    <div class="amenity-item">
+                        <input type="checkbox" id="cupboards-with-locks" name="room[amenities]" value="Cupboards with Locks">
+                        <label for="cupboards-with-locks">Cupboards with Locks</label>
+                    </div>
+                    <div class="amenity-item">
+                        <input type="checkbox" id="electronic-safe" name="room[amenities]" value="Electronic Safe">
+                        <label for="electronic-safe">Electronic Safe</label>
+                    </div>
+                    <div class="amenity-item">
+                        <input type="checkbox" id="safety" name="room[amenities]" value="Safety">
+                        <label for="safety">Safety</label>
+                    </div>
+                    <div class="amenity-item">
+                        <input type="checkbox" id="smoke-alarm" name="room[amenities]" value="Smoke Alarm">
+                        <label for="smoke-alarm">Smoke Alarm</label>
+                    </div>
+                    <div class="amenity-item">
+                        <input type="checkbox" id="in-house-movies" name="room[amenities]" value="In-house Movies">
+                        <label for="in-house-movies">In-house Movies</label>
+                    </div>
+                    <div class="amenity-item">
+                        <input type="checkbox" id="tv" name="room[amenities]" value="TV">
+                        <label for="tv">TV</label>
+                    </div>
+                    <div class="amenity-item">
+                        <input type="checkbox" id="shaving-mirror" name="room[amenities]" value="Shaving Mirror">
+                        <label for="shaving-mirror">Shaving Mirror</label>
+                    </div>
+                    <div class="amenity-item">
+                        <input type="checkbox" id="hairdryer" name="room[amenities]" value="Hairdryer">
+                        <label for="hairdryer">Hairdryer</label>
+                    </div>
+                    <div class="amenity-item">
+                        <input type="checkbox" id="towels" name="room[amenities]" value="Towels">
+                        <label for="towels">Towels</label>
+                    </div>
+                    <div class="amenity-item">
+                        <input type="checkbox" id="shower-cap" name="room[amenities]" value="Shower Cap">
+                        <label for="shower-cap">Shower Cap</label>
+                    </div>
+                    <div class="amenity-item">
+                        <input type="checkbox" id="dental-kit" name="room[amenities]" value="Dental Kit">
+                        <label for="dental-kit">Dental Kit</label>
+                    </div>
+                </div>
+            </div>
+
+            <h2 for="amenities" class="fs-1 text-center mb-3">Room Details</h2>
+
+            <div class="form-group px-5">
+                <textarea type="text" class="form-control" id="view" name="room[details]" width="100%" required></textarea>
+            </div>
+
+
+            <h2 for="amenities" class="fs-1 text-center mb-3">Room Images</h2>
+
+            <div class="form-group mb-3 text-center" class="width:50%">
+                <div class="input-group px-5" >
+                  <input type="file" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload" name="image"  multiple>
+                </div>
+            </div>
+            <div class="text-center">
+            <button type="submit" class="btn btn-success">Submit</button>
+           
+        </form>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</body>
+</html>

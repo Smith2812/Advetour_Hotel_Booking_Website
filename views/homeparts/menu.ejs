@@ -1,0 +1,199 @@
+<style>
+
+    .card img {
+        width: 70px;
+        height: 70px;
+    }
+    .card-body {
+        text-align: center;
+    }
+    .card.active{
+        border-bottom: 5px solid rgb(19, 170, 235);
+    }
+    .card.active .card-title {
+        color: rgb(19, 170, 235);
+    }
+    .card.active .card-title{
+        color: rgb(19, 170, 235);
+    }   
+    /* Default state */
+.radio-container {
+    padding: 10px;
+    display: inline-block;
+}
+
+/* Selected state */
+.selected {
+    background-color: rgb(205, 227, 235);
+}
+
+
+  
+  </style>
+
+
+<div class="mainbar container extend-lg bg-white mt-5 rounded-top w-50">
+  <div class="row pt-2 pb-2">
+      <div class="col-12 col-md-6 col-lg-4 col-xl-2">
+          <div class="card text-dark">
+              <a href="#" style="text-decoration: none; color: black;" class="btn btn2">
+                  <img src="https://cdn-icons-png.flaticon.com/128/12090/12090102.png" class="pt-1 pb-1">
+                  <div class="card-body">
+                      <h5 class="card-title">Flight</h5>
+                  </div>
+              </a>
+          </div>
+      </div>
+
+      <div class="col-12 col-md-6 col-lg-4 col-xl-2">
+          <div class="card text-dark">
+              <a href="#" style="text-decoration: none; color: black;" class="btn btn2">
+                  <img src="https://cdn-icons-png.flaticon.com/128/6571/6571603.png" class="pt-1 pb-1">
+                  <div class="card-body">
+                      <h5 class="card-title">Trains</h5>
+                  </div>
+              </a>
+          </div>
+      </div>
+
+      <div class="col-12 col-md-6 col-lg-4 col-xl-2">
+          <div class="card text-dark">
+              <a href="#" style="text-decoration: none; color: black;" class="btn btn2">
+                  <img src="https://cdn-icons-png.flaticon.com/128/985/985132.png" class="pt-1 pb-1">
+                  <div class="card-body">
+                      <h5 class="card-title">Buses</h5>
+                  </div>
+              </a>
+          </div>
+      </div>
+
+      <div class="col-12 col-md-6 col-lg-4 col-xl-2">
+          <div class="card text-dark">
+              <a href="#" style="text-decoration: none; color: black;" class="btn btn2">
+                  <img src="https://cdn-icons-png.flaticon.com/128/1023/1023386.png" class="pt-1 pb-1">
+                  <div class="card-body">
+                      <h5 class="card-title">Cabs</h5>
+                  </div>
+              </a>
+          </div>
+      </div>
+
+      <div class="col-12 col-md-6 col-lg-4 col-xl-2">
+          <div class="card text-dark">
+              <a href="#" style="text-decoration: none; color: black;" class="btn btn2">
+                  <img src="https://cdn-icons-png.flaticon.com/128/701/701348.png" class="pt-1 pb-1">
+                  <div class="card-body">
+                      <h5 class="card-title">Hotels</h5>
+                  </div>
+              </a>
+          </div>
+      </div>
+
+      <div class="col-12 col-md-6 col-lg-4 col-xl-2">
+          <div class="card text-dark">
+              <a href="#" style="text-decoration: none; color: black;" class="btn btn2">
+                  <img src="https://cdn-icons-png.flaticon.com/128/1018/1018528.png" class="pt-1 pb-1">
+                  <div class="card-body">
+                      <h5 class="card-title">Villas</h5>
+                  </div>
+              </a>
+          </div>
+      </div>
+  </div>
+</div>
+
+
+<div class="supportbar container bg-white rounded w-100 pt-2 pb-2" style="position: relative;top:auto">
+  <div class="flights text-dark d-flex flex-column">
+    <div class="column mt-2 ms-3 mb-2">
+        <div class="radio-container">
+            <input class="form-check-input" type="radio" name="radioOptions" id="radio1" value="option1">
+            <label class="form-check-label me-3" for="radio1">One Way</label>
+        </div>
+        <div class="radio-container">
+            <input class="form-check-input" type="radio" name="radioOptions" id="radio2" value="option2">
+            <label class="form-check-label me-3" for="radio2">Round trip</label>
+        </div>
+        <div class="radio-container">
+            <input class="form-check-input" type="radio" name="radioOptions" id="radio3" value="option3">
+            <label class="form-check-label me-3" for="radio3">Multicity</label>
+        </div>
+    </div>
+    
+    
+    <div class="row rounded mx-2 shadow-lg bg-white px-2 pb-2 text-dark">
+      <h5 class="text-center">Flight Tickets Booking</h5>
+      <div class="col-12 col-lg-4 border border-2 rounded-start">
+          <label for="departure">From:</label>
+          <br>
+          <select id="departure" style="width: 200px;">
+              <option value="NYC">New York City</option>
+              <option value="LAX">Los Angeles</option>
+              <option value="CHI">Chicago</option>
+              <option value="HOU">Houston</option>
+              <option value="PHX">Phoenix</option>
+              <!-- Add more options as needed -->
+          </select>
+        </div>
+        <div class="col-12 col-lg-4 border border-2">
+          <label for="departure">To:</label>
+          <br>
+          <select id="departure" style="width: 200px;">
+              <option value="NYC">New York City</option>
+              <option value="LAX">Los Angeles</option>
+              <option value="CHI">Chicago</option>
+              <option value="HOU">Houston</option>
+              <option value="PHX">Phoenix</option>
+              <!-- Add more options as needed -->
+          </select>
+        </div>
+        <div class="col-12 col-lg-4 border border-2 rounded-end">
+          <label for="datePicker" class="form-label">Choose a date:</label>
+          <input type="date" id="datePicker" class="form-control">
+        </div>
+        <div class="d-flex justify-content-center mt-2"><button class="btn btn-primary">Search</button></div>
+    </div>
+ </div>
+
+ 
+
+</div>
+
+<script>
+const buttons = document.querySelectorAll('.btn2');
+buttons.forEach((button, index) => {
+    button.addEventListener('click', function(event) {
+        event.preventDefault();
+        buttons.forEach(btn => btn.closest('.card').classList.remove('active'));
+        this.closest('.card').classList.add('active');
+
+        const supportbar = document.querySelector('.supportbar');
+        const sections = supportbar.children;
+        for (let section of sections) {
+            section.style.display = 'none';
+        }
+        if (index === 1) {
+            document.querySelector('.flights').style.display = 'flex';
+        } else if (index === 2) {
+            document.querySelector('.buses').style.display = 'flex';
+        }
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const radioButtons = document.querySelectorAll('input[name="radioOptions"]');
+
+    radioButtons.forEach(radio => {
+        radio.addEventListener('change', function() {
+            // Remove 'selected' class from all radio button parent elements
+            radioButtons.forEach(rb => rb.parentElement.classList.remove('selected'));
+            
+            // Add 'selected' class to the clicked radio button's parent element
+            this.parentElement.classList.add('selected');
+            this.parentElement.classList.add('rounded-pill');
+        });
+    });
+});
+
+
+</script>

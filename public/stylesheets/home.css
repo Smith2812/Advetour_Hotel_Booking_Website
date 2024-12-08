@@ -1,0 +1,30 @@
+body{
+    font-family: "Mukta", "Lato", sans-serif;
+    background-color: rgb(243, 237, 235);
+}
+.menu {
+    position: relative; /* Necessary for the ::before pseudo-element to work properly */
+    min-height: 40rem;
+    min-width: auto;
+    background-image: url('https://i0.wp.com/geolearn.in/wp-content/uploads/2021/11/Himalayas-Mountain.jpg'),url('https://encrypted-tbn1.gstatic.com/licensed-image?q=tbn:ANd9GcRtrukLnVi_pqxepjUAYkzskiiygSzs8iMFIVOCcuESkFY_kNbCrm_WtXo5n9zuYQkEKX_0V1f-C1HZCK_fo4QVj_9zRkArZCy3VLcG1g');
+    background-size: cover; /* Ensures the image covers the entire element */
+    background-position: center; /* Centers the image */
+    box-shadow: inset 0 0 10rem rgba(0, 0, 0, 1);
+}
+
+.menu::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Adjust the alpha value to make the overlay darker or lighter */
+    z-index: 1;
+    pointer-events: none; /* Ensures that the overlay does not interfere with any interactive elements */
+}
+
+.menu * {
+    position: relative;
+    z-index: 2; /* Ensures that the content is above the overlay */
+}

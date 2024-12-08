@@ -1,0 +1,696 @@
+<% layout('./layout/boilerplate') %>
+
+<style>
+  #map {
+    width: 100%;
+    height: 400px;
+  }
+  .sort-bar {
+    display: flex;
+    flex-wrap: wrap;
+    background-color: #e0f7fa;
+    padding: 10px;
+  }
+  .sort-option {
+    cursor: pointer;
+    margin-right: 3rem;
+    padding: 5px 10px;
+  }
+  .sort-option.active {
+    border-bottom: 5px solid rgb(8, 197, 244);
+    border-radius: 10% 10% 10% 10%;
+    color: rgb(8, 197, 244);
+  }
+  .hotelbar {
+    margin-top: 1rem;
+    margin-bottom: 0;
+  }
+  .hotelbar .header {
+    padding: 1rem 2rem 0.5rem 2rem;
+    background: linear-gradient(to bottom, #1e3c72, #04368b, #08339f);
+  }
+  .hotelbar .header span {
+    color: cyan;
+  }
+  .hotelbar .header h3 {
+    margin: 0;
+  }
+  .sort-bar .sort-title {
+    font-weight: bold;
+    margin-right: 0.5rem;
+  }
+  @media (max-width: 768px) {
+    .hotelbar .header {
+      text-align: center;
+      padding: 1rem;
+    }
+    .sort-bar {
+      justify-content: center;
+    }
+    .sort-option {
+      margin-bottom: 10px;
+      margin-right: 10px;
+    }
+    .sort-title {
+      display: block;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+  }
+  @media (max-width: 480px) {
+    .sort-bar {
+      flex-direction: column;
+      align-items: center;
+    }
+    .sort-option {
+      margin-right: 0;
+      margin-bottom: 10px;
+    }
+    .sort-title {
+      margin-bottom: 10px;
+    }
+  }
+  @media (max-width: 576px) {
+    #map {
+      height: 500px;
+    }
+  }
+  .hotelcontent {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin: 1rem;
+  }
+  .hotelcontent .col-md-4,
+  .hotelcontent .col-md-8 {
+    padding: 0.5rem;
+  }
+  .card-custom {
+    margin: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  .card-custom .card-header h5 {
+    margin: 0;
+    font-size: 1.25rem;
+  }
+  .card-custom .card-body {
+    padding: 1rem 1.5rem;
+  }
+  .card-custom .card-body p {
+    margin: 0;
+  }
+  .card-custom .rating {
+    background-color: #28a745;
+    color: #fff;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 1rem;
+  }
+  .card-custom .price {
+    color: #e74c3c;
+    font-size: 1.5rem;
+  }
+  .card-custom .old-price {
+    text-decoration: line-through;
+    color: #999;
+  }
+  .card-custom .discount {
+    color: #27ae60;
+    font-size: 1rem;
+  }
+  .marker-content {
+    font-size: 14px;
+    color: #000;
+    font-weight: bold;
+  }
+  .applied-filter {
+  display: flex;
+  align-items: center;
+  background-color: #e3f2fd;
+  border: 1px solid #90caf9;
+  border-radius: 5px;
+  padding: 5px 10px;
+  margin: 5px;
+  font-size: 14px;
+}
+
+.applied-filter .remove-filter {
+  margin-left: 10px;
+  cursor: pointer;
+  color: #757575;
+  font-size: 16px;
+}
+.search-bar {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+  padding-left: 10px;
+}
+
+@media (max-width: 768px) {
+  .search-bar {
+    margin-left: 0;
+    margin-top: 10px;
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .search-bar {
+    width: 90%;
+  }
+}
+
+.vertical-line {
+  border-right: 2px solid #dee2e6;
+  height: 70%;
+  position: absolute  ;
+  left: 70%;
+  top: auto;
+}
+
+@media (max-width: 768px) {
+  .vertical-line {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .vertical-line {
+    display: none;
+  }
+}
+
+.hotel-card {
+  transition: border-color 0.3s ease-in-out;
+}
+
+.hotel-card:hover {
+   border: 2px solid #0724f9; /* Change to your desired border color */
+}
+
+
+
+</style>
+
+<script>
+  const maptoken = '<%- process.env.MAPBOX_TOKEN %>';
+  const staycity = <%- JSON.stringify(staycity) %>;
+  const hotels = <%- JSON.stringify(staycity.hotels) %>;
+  const currentUser = <%- JSON.stringify(currentUser) %>;
+</script>
+
+<div class="hotelbar mt-5 mb-0">
+  <div class="header">
+    <span><a href="/home" style="text-decoration: none">home > </a> </span>
+    <span> Homestays and more in <%= staycity.location %> </span>
+    <br />
+    <h3>
+      <%= staycity.hotels.length %> Properties in <%= staycity.location %>
+    </h3>
+  </div>
+  <div class="sort-bar text-dark shadow-lg mt-0 fs-7 pt-2 ps-5 column-gap-5">
+    <div class="sort-title"><b>SORT BY :</b></div>
+    <div class="sort-option" onclick="sortHotels('popular')">
+      <b>Popular</b>
+    </div>
+    <div class="sort-option" onclick="sortHotels('rating')">
+      <b>User Rating (Highest First)</b>
+    </div>
+    <div class="sort-option" onclick="sortHotels('priceHigh')">
+      <b>Price (Highest First)</b>
+    </div>
+    <div class="sort-option" onclick="sortHotels('priceLow')">
+      <b>Price (Lowest First)</b>
+    </div>
+    <div>
+      <a class="btn mb-0" data-bs-toggle="modal" data-bs-target="#mapModal">
+        <img src="https://imgak.mmtcdn.com/pwa_v3/pwa_hotel_assets/viewMapNew.png" width="107px" height="36px" alt="">
+      </a>
+    </div>
+
+    <input type="text" id="hotelSearchInput" onkeyup="searchHotels()" placeholder="Search for hotels..." class="search-bar">
+  </div>
+
+  <div class="hotelcontent d-flex flex-row">
+    
+    <div class="col-md-1"></div>
+    <div class="filter col-md-2  col-12 text-dark text-left"  >
+      <div class="applied-filters mb-3">
+       
+        <div id="applied-filters-section" class="mb-3">
+          <h4><strong>Applied Filters</strong><a href="#" onclick="clearFilters()" class="btn btn-primary ms-4" style="text-decoration: none;">Clear</a></h4>
+          <div id="applied-filters-list" class="d-flex flex-wrap"></div>
+        </div>
+
+      </div>
+      <h4 class="mb-3"><strong>Select Filters</strong></h4>
+      <div class="mb-3 fs-5">
+        <label class="form-label"><b>Price per night</b></label>
+        <div>
+          <input type="checkbox" class="form-check-input" id="price0-1000" value="0-1000" onchange="filterHotels()">
+          <label class="form-check-label" for="price0-1000">₹0 - ₹1000</label>
+        </div>
+        <div>
+          <input type="checkbox" class="form-check-input" id="price1000-2000" value="1000-2000" onchange="filterHotels()">
+          <label class="form-check-label" for="price1000-2000">₹1000 - ₹2000</label>
+        </div>
+        <div>
+          <input type="checkbox" class="form-check-input" id="price2000-4000" value="2000-4000" onchange="filterHotels()">
+          <label class="form-check-label" for="price2000-4000">₹2000 - ₹4000</label>
+        </div>
+        <div>
+          <input type="checkbox" class="form-check-input" id="price4000-6000" value="4000-6000" onchange="filterHotels()">
+          <label class="form-check-label" for="price4000-6000">₹4000 - ₹6000</label>
+        </div>
+        <div>
+          <input type="checkbox" class="form-check-input" id="price6000-10000" value="6000-10000" onchange="filterHotels()">
+          <label class="form-check-label" for="price6000-10000">₹6000 - ₹10000</label>
+        </div>
+      </div>
+      <div class="mb-3 fs-5">
+        <label class="form-label"><b>Rating</b></label>
+        <div>
+          <input type="checkbox" class="form-check-input" id="rating4" value="4" onchange="filterHotels()">
+          <label class="form-check-label" for="rating4">4 & above</label>
+        </div>
+        <div>
+          <input type="checkbox" class="form-check-input" id="rating3" value="3" onchange="filterHotels()">
+          <label class="form-check-label" for="rating3">3 & above</label>
+        </div>
+        <div>
+          <input type="checkbox" class="form-check-input" id="rating2" value="2" onchange="filterHotels()">
+          <label class="form-check-label" for="rating2">2 & above</label>
+        </div>
+        <div>
+          <input type="checkbox" class="form-check-input" id="rating1" value="1" onchange="filterHotels()">
+          <label class="form-check-label" for="rating1">1 & above</label>
+        </div>
+      </div>
+      <div class="mb-3 fs-5">
+        <label class="form-label"><b>Category</b></label>
+        <div>
+          <input type="checkbox" class="form-check-input" id="categoryHotel" value="Hotel" onchange="filterHotels()">
+          <label class="form-check-label" for="categoryHotel">Hotel</label>
+        </div>
+        <div>
+          <input type="checkbox" class="form-check-input" id="categoryApartment" value="Apartment" onchange="filterHotels()">
+          <label class="form-check-label" for="categoryApartment">Apartment</label>
+        </div>
+        <div>
+          <input type="checkbox" class="form-check-input" id="categoryResort" value="Resort" onchange="filterHotels()">
+          <label class="form-check-label" for="categoryResort">Resort</label>
+        </div>
+        <div>
+          <input type="checkbox" class="form-check-input" id="categoryGuesthouse" value="Guesthouse" onchange="filterHotels()">
+          <label class="form-check-label" for="categoryGuesthouse">Guesthouse</label>
+        </div>
+      </div> 
+    </div>
+    <div class="col-md-8 shadow-lg rounded bg-light col-12" id="hotel-list">
+
+      <% for(let hotel of staycity.hotels){ %>
+    
+        <div class="card card-custom hotel-card p-3 mx-5 mt-5">
+          
+          <div class="row no-gutters position-relative">
+              <div class="col-md-4">
+                  <img src="<%= hotel.images[0].url %>" class="card-img hotel-image" alt="Hotel Image">
+                  <div class="d-flex mt-2 overflow-hidden">
+                    <% if(hotel.images.length>1) {%>
+                       
+                       <% for(let image of hotel.images){ %>
+                        
+                        <% if(image.url === hotel.images[0].url){ %>
+                        <% continue %>
+                        <% } %>
+                      
+                      <img src="<%= image.url %>" class="card-img hotel-image me-2" width="50px" height="50px" alt="Thumbnail">
+                       
+                       <% } %>
+
+                    <% } %>
+                  </div>
+              </div>
+              <div class="col-md-5">
+                  <div class="card-body">
+                      <h5 class="card-title"><%= hotel.title %><span class="rating">&#9733;&#9733;&#9733;&#9733;&#9734;</span></h5>
+                      <p class="card-text"><a href="#"><%= hotel.area %></a> | <%= hotel.nearby %></p>
+                      <span class="badge text-dark bg-warning"><%= hotel.category %></span>
+                      <br>
+                      <p class="text-success text-wrap"><%= hotel.capacity %></p>
+                      <p class="card-text mt-2"><i class="fas fa-map-marker-alt"></i> <%= hotel.address %></p>
+                  </div>
+              </div>
+              <div class="col-md-3 text-center">
+                <p class="card-text mb-0 fs-5"><span class="badge badge-primary bg-success">Very Good</span> <span class="badge badge-primary bg-primary"><%= hotel.rating %></span></p>
+                <p class="card-text fs-6">(<%= hotel.reviews.length %>) reviews</p>
+                  <div class="card-body border" style="border-left: #757575 5px dashed;">
+                      <h5 class="card-text old-price" style="text-decoration:line-through">₹ <%= hotel.oldprice %></h5>
+                      <h3 class="card-text new-price">₹ <%= hotel.newprice %></h3>
+                      <p class="card-text">+ ₹ <%= (hotel.newprice*12)/100 %> taxes & fees Per Night</p>
+                  </div>
+              </div>
+          </div>
+          <hr>
+          <div class="d-flex  justify-content-center column-gap-1">
+            <form action="/hotels/<%= hotel._id %>" method="get">
+              <button class="btn btn-primary">View</button>
+            </form>
+            <% if(currentUser && hotel.owner.equals(currentUser._id)) {%>
+            <button class="btn btn-success" onclick="openPopupedit('<%= hotel._id %>')"> Change</button>
+            <form action="/hotels/delete/<%= hotel._id %>" method="POST">
+            <button class="btn btn-warning">Delete</button>
+            <% } %>
+            </form>
+          </div>
+        </div>
+        
+      
+      <% } %>
+  
+      
+
+
+    </div>
+    <div class="col-md-1"></div>
+  </div>
+</div>
+
+<!-- Map Modal -->
+<div class="modal fade text-dark" id="mapModal" tabindex="-1" aria-labelledby="mapModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg model-fullscreen">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="mapModalLabel">Map</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body row d-flex flex-row">
+        <!-- <div class="col-4 text-dark" id="priceRangeFilter">
+          <label><input type="checkbox" class="price-filter" value="1000-2000"> ₹1000 - ₹2000</label><br>
+          <label><input type="checkbox" class="price-filter" value="2000-4000"> ₹2000 - ₹4000</label><br>
+          <label><input type="checkbox" class="price-filter" value="4000-6000"> ₹4000 - ₹6000</label><br>
+        </div> -->
+        <div class="col-8" id="mapModalContent" style="width: 100%; height: 100vh;"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+  
+  function openPopupadd() {
+    const width = screen.width;
+    const height = screen.height;
+    const features = `width=${width},height=${height},scrollbars=yes,toolbar=no,menubar=no,resizable=yes,location=no,status=no`;
+    window.open('/hotels/add/<%= staycity._id %>', 'popupWindow', features);
+}
+
+
+  function openPopupedit(hotelId) {
+    const width = 600;
+    const staycityId = staycity._id;
+    const height = 400;
+    const left = (screen.width - width) / 2;
+    const top = (screen.height - height) / 2;
+    const features = `width=${width},height=${height},scrollbars=yes,toolbar=no,menubar=no,resizable=no,location=no,status=no,top=${top},left=${left}`;
+    window.open(`/hotels/edit/${staycityId}/${hotelId}`, 'popupWindow', features);
+  }
+
+  function activateTab(element) {
+    var tabs = document.querySelectorAll('.sort-option');
+    tabs.forEach(function(tab) {
+      tab.classList.remove('active');
+    });
+    element.classList.add('active');
+  }
+  
+  function sortHotels(criteria) {
+  const hotelList = document.getElementById('hotel-list');
+  let hotels = <%- JSON.stringify(staycity.hotels) %>;
+
+  if (criteria === 'rating') {
+    hotels.sort((a, b) => b.Rating - a.Rating);
+  } else if (criteria === 'priceHigh') {
+    hotels.sort((a, b) => b.newprice - a.newprice);
+  } else if (criteria === 'priceLow') {
+    hotels.sort((a, b) => a.newprice - b.newprice);
+  }
+  
+
+  hotelList.innerHTML = hotels.map(hotel => `
+   <div class="card hotel-card p-3 mx-5 mt-5 card-custom ">
+    <div class="row no-gutters position-relative">
+      <div class="col-md-4">
+        <img src="${hotel.images[0].url}" class="card-img hotel-image" alt="Hotel Image">
+        <div class="d-flex mt-2 overflow-hidden">
+        ${hotel.images.slice(1).map(image => `<img src="${image.url}" class="card-img hotel-image me-2" width="50px" height="50px" alt="Thumbnail">`).join('')}
+        </div>
+      </div>
+      <div class="col-md-5">
+        <div class="card-body">
+          <h5 class="card-title">${hotel.title}<span class="rating">&#9733;&#9733;&#9733;&#9733;&#9734;</span></h5>
+          <p class="card-text"><a href="#">${hotel.area}</a> | ${hotel.nearby}</p>
+          <span class="badge text-dark bg-warning">${hotel.category}</span>
+          <br>
+          <p class="text-success text-wrap">${hotel.capacity}</p>
+          <p class="card-text mt-2"><i class="fas fa-map-marker-alt"></i> ${hotel.address}</p>
+        </div>
+      </div>
+      <div class="col-md-3 text-center">
+        <p class="card-text mb-0 fs-5"><span class="badge badge-primary bg-success">Very Good</span> <span class="badge badge-primary bg-primary">${hotel.rating}</span></p>
+        <p class="card-text fs-6">(${hotel.reviews.length}) reviews</p>
+        <div class="card-body border" style="border-left: #757575 5px dashed;">
+          <h5 class="card-text old-price" style="text-decoration:line-through">₹ ${hotel.oldprice}</h5>
+          <h3 class="card-text new-price">₹ ${hotel.newprice}</h3>
+          <p class="card-text">+ ₹ ${(hotel.newprice * 12) / 100} taxes & fees Per Night</p>
+        </div>
+      </div>
+    </div>
+    <hr>
+    <div class="d-flex justify-content-center column-gap-1">
+      <form action="/hotels/add/${hotel._id}" method="POST">
+        <button class="btn btn-primary">view</button>
+      </form>
+      ${currentUser && hotel.owner === currentUser._id ? `
+      <button class="btn btn-success" onclick="openPopupedit('${hotel._id}')"> Change</button>
+      <form action="/hotels/delete/${hotel._id}" method="POST">
+        <button class="btn btn-warning">Delete</button>
+      </form>` : ''}
+    </div>
+  </div>  
+  `).join('');
+
+  const tabs = document.querySelectorAll('.sort-option');
+  tabs.forEach(function(tab) {
+    tab.classList.remove('active');
+  });
+  document.querySelector(`.sort-option[onclick="sortHotels('${criteria}')"]`).classList.add('active');
+}
+
+function filterHotels() {
+  const priceFilters = [...document.querySelectorAll('input[type="checkbox"][id^="price"]:checked')].map(cb => cb.value);
+  const ratingFilters = [...document.querySelectorAll('input[type="checkbox"][id^="rating"]:checked')].map(cb => cb.value);
+  const categoryFilters = [...document.querySelectorAll('input[type="checkbox"][id^="category"]:checked')].map(cb => cb.value);
+
+  let filteredHotels = hotels;
+
+  if (priceFilters.length) {
+    filteredHotels = filteredHotels.filter(hotel => priceFilters.some(price => {
+      const [minPrice, maxPrice] = price.split('-').map(Number);
+      return hotel.newprice >= minPrice && hotel.newprice <= maxPrice;
+    }));
+  }
+
+  if (ratingFilters.length) {
+    filteredHotels = filteredHotels.filter(hotel => ratingFilters.some(rating => hotel.rating >= rating));
+  }
+
+  if (categoryFilters.length) {
+    filteredHotels = filteredHotels.filter(hotel => categoryFilters.includes(hotel.category));
+  }
+
+  const hotelList = document.getElementById('hotel-list');
+  hotelList.innerHTML = filteredHotels.map(hotel => `
+    <div class="card hotel-card p-3 mx-5 mt-5 card-custom ">
+    <div class="row no-gutters position-relative">
+      <div class="col-md-4">
+        <img src="${hotel.images[0].url}" class="card-img hotel-image" alt="Hotel Image">
+        <div class="d-flex mt-2 overflow-hidden">
+        ${hotel.images.slice(1).map(image => `<img src="${image.url}" class="card-img hotel-image me-2" width="50px" height="50px" alt="Thumbnail">`).join('')}
+        </div>
+      </div>
+      <div class="col-md-5">
+        <div class="card-body">
+          <h5 class="card-title">${hotel.title}<span class="rating">&#9733;&#9733;&#9733;&#9733;&#9734;</span></h5>
+          <p class="card-text"><a href="#">${hotel.area}</a> | ${hotel.nearby}</p>
+          <span class="badge text-dark bg-warning">${hotel.category}</span>
+          <br>
+          <p class="text-success text-wrap">${hotel.capacity}</p>
+          <p class="card-text mt-2"><i class="fas fa-map-marker-alt"></i> ${hotel.address}</p>
+        </div>
+      </div>
+      <div class="col-md-3 text-center">
+        <p class="card-text mb-0 fs-5"><span class="badge badge-primary bg-success">Very Good</span> <span class="badge badge-primary bg-primary">${hotel.rating}</span></p>
+        <p class="card-text fs-6">(${hotel.reviews.length}) reviews</p>
+        <div class="card-body border" style="border-left: #757575 5px dashed;">
+          <h5 class="card-text old-price" style="text-decoration:line-through">₹ ${hotel.oldprice}</h5>
+          <h3 class="card-text new-price">₹ ${hotel.newprice}</h3>
+          <p class="card-text">+ ₹ ${(hotel.newprice * 12) / 100} taxes & fees Per Night</p>
+        </div>
+      </div>
+    </div>
+    <hr>
+    <div class="d-flex justify-content-center column-gap-1">
+      <form action="/hotels/add/${hotel._id}" method="POST">
+        <button class="btn btn-primary">view</button>
+      </form>
+      ${currentUser && hotel.owner === currentUser._id ? `
+      <button class="btn btn-success" onclick="openPopupedit('${hotel._id}')"> Change</button>
+      <form action="/hotels/delete/${hotel._id}" method="POST">
+        <button class="btn btn-warning">Delete</button>
+      </form>` : ''}
+    </div>
+  </div>  
+
+  `).join('');
+
+  updateAppliedFilters(priceFilters, ratingFilters, categoryFilters);
+}
+
+function updateAppliedFilters(priceFilters, ratingFilters, categoryFilters) {
+const appliedFiltersList = document.getElementById('applied-filters-list');
+appliedFiltersList.innerHTML = '';
+
+const filters = [
+  ...priceFilters.map(price => ({ type: 'price', value: price })),
+  ...ratingFilters.map(rating => ({ type: 'rating', value: `${rating} & above` })),
+  ...categoryFilters.map(category => ({ type: 'category', value: category }))
+];
+
+if (filters.length) {
+  filters.forEach(filter => {
+    const filterItem = document.createElement('div');
+    filterItem.className = 'applied-filter';
+    filterItem.innerHTML = `
+      ${filter.value}
+      <span class="remove-filter" onclick="removeFilter('${filter.type}', '${filter.value}')">&times;</span>
+    `;
+    appliedFiltersList.appendChild(filterItem);
+  });
+} else {
+  appliedFiltersList.textContent = 'None';
+}
+}
+
+function removeFilter(type, value) {
+document.querySelectorAll(`input[type="checkbox"][id^="${type}"]`).forEach(cb => {
+  if (type === 'rating') {
+    if (cb.value === value.split(' ')[0]) cb.checked = false;
+  } else if (cb.value === value) {
+    cb.checked = false;
+  }
+});
+filterHotels();
+}
+
+function clearFilters() {
+document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+filterHotels();
+}
+
+function searchHotels() {
+const searchInput = document.getElementById('hotelSearchInput').value.toLowerCase();
+const filteredHotels = hotels.filter(hotel => hotel.title.toLowerCase().includes(searchInput) ||
+  hotel.location.toLowerCase().includes(searchInput) ||
+  hotel.category.toLowerCase().includes(searchInput));
+
+const hotelList = document.getElementById('hotel-list');
+hotelList.innerHTML = filteredHotels.map(hotel => `
+ <div class="card hotel-card p-3 mx-5 mt-5 card-custom ">
+    <div class="row no-gutters position-relative">
+      <div class="col-md-4">
+        <img src="${hotel.images[0].url}" class="card-img hotel-image" alt="Hotel Image">
+        <div class="d-flex mt-2 overflow-hidden">
+        ${hotel.images.slice(1).map(image => `<img src="${image.url}" class="card-img hotel-image me-2" width="50px" height="50px" alt="Thumbnail">`).join('')}
+        </div>
+      </div>
+      <div class="col-md-5">
+        <div class="card-body">
+          <h5 class="card-title">${hotel.title}<span class="rating">&#9733;&#9733;&#9733;&#9733;&#9734;</span></h5>
+          <p class="card-text"><a href="#">${hotel.area}</a> | ${hotel.nearby}</p>
+          <span class="badge text-dark bg-warning">${hotel.category}</span>
+          <br>
+          <p class="text-success text-wrap">${hotel.capacity}</p>
+          <p class="card-text mt-2"><i class="fas fa-map-marker-alt"></i> ${hotel.address}</p>
+        </div>
+      </div>
+      <div class="col-md-3 text-center">
+        <p class="card-text mb-0 fs-5"><span class="badge badge-primary bg-success">Very Good</span> <span class="badge badge-primary bg-primary">${hotel.rating}</span></p>
+        <p class="card-text fs-6">(${hotel.reviews.length}) reviews</p>
+        <div class="card-body border" style="border-left: #757575 5px dashed;">
+          <h5 class="card-text old-price" style="text-decoration:line-through">₹ ${hotel.oldprice}</h5>
+          <h3 class="card-text new-price">₹ ${hotel.newprice}</h3>
+          <p class="card-text">+ ₹ ${(hotel.newprice * 12) / 100} taxes & fees Per Night</p>
+        </div>
+      </div>
+    </div>
+    <hr>
+    <div class="d-flex justify-content-center column-gap-1">
+      <form action="/hotels/add/${hotel._id}" method="POST">
+        <button class="btn btn-primary">view</button>
+      </form>
+      ${currentUser && hotel.owner === currentUser._id ? `
+      <button class="btn btn-success" onclick="openPopupedit('${hotel._id}')"> Change</button>
+      <form action="/hotels/delete/${hotel._id}" method="POST">
+        <button class="btn btn-warning">Delete</button>
+      </form>` : ''}
+    </div>
+  </div>  
+`).join('');
+}
+
+
+// Initializing the modal map
+document.getElementById('mapModal').addEventListener('shown.bs.modal', function () {
+  const mapModal = new mapboxgl.Map({
+    container: 'mapModalContent',
+    style: 'mapbox://styles/mapbox/dark-v11',
+    center: [hotels[0].geometry.coordinates[0],hotels[0].geometry.coordinates[1]],
+    zoom: 10,
+  });
+
+  mapModal.addControl(new mapboxgl.NavigationControl());
+
+  hotels.forEach(hotel => {
+    const el = document.createElement('div');
+    el.className = 'marker';
+    el.style.backgroundImage = 'url(https://cdn-icons-png.flaticon.com/128/5145/5145226.png)';
+    el.style.width = '30px';
+    el.style.height = '30px';
+    el.style.backgroundSize = 'cover';
+
+    new mapboxgl.Marker(el)
+      .setLngLat(hotel.geometry.coordinates)
+      .setPopup(
+        new mapboxgl.Popup({ offset: 2 })
+          .setHTML(
+            `<div class="card" style="width: 100%;">
+              <img src="${hotel.images[0].url}" class="card-img-top" alt="${hotel.title}">
+              <div class="card-body">
+                <p class="card-title fs-8 text-wrap">${hotel.title}</p>
+                <p class="card-text">₹ ${hotel.newprice}</p>
+              </div>
+            </div>`
+          )
+      )
+      .addTo(mapModal);
+  });
+
+  mapModal.resize();
+});
+  
+</script>
+
+<script src="/javascripts/showPageMap.js"></script>
